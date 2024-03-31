@@ -24,7 +24,7 @@ whitish_pixels = np.count_nonzero((imarr[ :, :, 0] > 140) & (imarr[ :, :, 1] > 1
 print(f"{whitish_pixels} out of {size} pixels are whitish")
 print(f"{whitish_pixels / size * 100}% of the image is whitish")
 
-fraction = np.shape[0] / 10
+fraction = np.shape(im)[0] / 10
 
 for i in range(9):
     imarr = alter(imarr, i*fraction, (i+1)*fraction)
