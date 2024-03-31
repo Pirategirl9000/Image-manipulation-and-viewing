@@ -1,4 +1,3 @@
-import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
 from skimage import io
@@ -27,19 +26,20 @@ def alter(start, end):
     end = int(end)
     global imarr
     amount = end - start
-    arr = []
-    arr.append(imarr[start:end-1])
+    arr = (imarr[start:end, :, :])
 
-    for row in arr[0]:
+    for row in arr:
         for pixel in row:
             if (pixel[0] > 140) and (pixel[1] > 140) and (pixel[2] > 140):
-                arr[current, pixel] = [0, 255, 0]
-        start += 1
-        if (start % 20 == 0):
+                print(f"ROW: {row}")
+                print(f"PIXEL: {pixel}")
+                arr[row, pixel] = [0, 255, 0]
+        current += 1
+        if (current % 20 == 0):
             print(f"{end - current} left out of {amount}")
         if (current >= end):
             print("complete")
-            imarr[start:end-1] = arr
+            imarr[start:end] = arr
             return
 
 threads = [
