@@ -14,33 +14,25 @@ whitish_pixels = np.count_nonzero((imarr[ :, :, 0] > 140) & (imarr[ :, :, 1] > 1
 print(f"{whitish_pixels} out of {size} pixels are whitish")
 print(f"{whitish_pixels / size * 100}% of the image is whitish")
 
-fraction = np.shape(im)[0] / 16
-
-#for i in range(15):
-#    print(f"Starting {i} sweep")
-#    imarr = alter(imarr, i*fraction, (i+1)*fraction-1)
+fraction = np.shape(imarr)
+fraction = fraction[0]
+fraction /= 16
+fraction = int(fraction)
 
 def alter(start, end):
-    current = int(start)
+    current_row = int(start)
     start = int(start)
     end = int(end)
     global imarr
-    amount = end - start
-    arr = (imarr[start:end, :, :])
 
-    for row in arr:
-        for pixel in row:
-            if (pixel[0] > 140) and (pixel[1] > 140) and (pixel[2] > 140):
-                print(f"ROW: {row}")
-                print(f"PIXEL: {pixel}")
-                arr[row, pixel] = [0, 255, 0]
-        current += 1
-        if (current % 20 == 0):
-            print(f"{end - current} left out of {amount}")
-        if (current >= end):
-            print("complete")
-            imarr[start:end] = arr
-            return
+    while (current_row < end):
+        i = 0
+        while (i < 3024):
+            if (imarr[current_row, i, 0] > 140) and (imarr[current_row, i, 1] > 140 and (imarr[current_row, i, 2] > 140)):
+                imarr[current_row, i] = [0, 255, 0]
+            i += 1
+        current_row += 1
+
 
 threads = [
     threading.Thread(target=alter, args=(0, fraction - 1)),
@@ -68,11 +60,6 @@ for x in threads:
 for x in threads:
     x.join()
 
-#for x in imarr: #x index
-#    for y in x:
-#        if (y[0] > 140) and (y[1] > 140) and (y[2] > 140):
-#            imarr[x, y] = [255, 0, 0]
 
-
-plt.imshow(imarr)
+plt.imshow(imarr, vmin = 250)
 plt.show()
