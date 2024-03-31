@@ -51,7 +51,7 @@ threads = [
 
 for x in threads:
     print(f"starting thread x")
-    imarr = threads[x]
+    imarr = threads[x].start()
 
 
 #for x in imarr: #x index
